@@ -47,7 +47,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     })
                 }
 
-                const books = await prisma.book.findMany()
+                const books = await prisma.book.findMany({
+                    orderBy: {
+                        id: 'desc'
+                    }
+                })
                 return res.status(200).json({
                     status: true,
                     message: "success get list of book",
