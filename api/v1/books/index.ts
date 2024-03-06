@@ -81,7 +81,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
             case "DELETE": {
                 if (req.query.delete == "all") {
-                    await prisma.$executeRawUnsafe(`TRUNCATE TABLE Book;`)
+                    await prisma.$queryRaw(
+                        Prisma.sql`SELECT TruncateBookTable();`
+                    )
                     return res.status(200).json({
                         status: true,
                         message: "success delete all book",
