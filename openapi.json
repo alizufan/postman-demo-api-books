@@ -1,0 +1,308 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Book's REST API",
+      "description": "This API facilitates the management and retrieval of book records, leveraging Prisma for direct database interactions and Supabase for specific operations. It is designed to support CRUD operations on book records, offering filtering, pagination, and bulk deletion capabilities.\n",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://postman-demo-api-books.vercel.app"
+      }
+    ],
+    "paths": {
+      "/api/v1/books": {
+        "get": {
+          "summary": "Get Books or a Single Book",
+          "description": "Retrieves a list of books or a single book by ID. Supports filtering by title, description, and author, and offers pagination.\n",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID of the book to retrieve. If specified, returns a single book; otherwise, returns a list of books."
+            },
+            {
+              "in": "query",
+              "name": "take",
+              "schema": {
+                "type": "integer"
+              },
+              "description": "Number of books to return for pagination."
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "integer"
+              },
+              "description": "Page number for pagination."
+            },
+            {
+              "in": "query",
+              "name": "title",
+              "schema": {
+                "type": "string"
+              },
+              "description": "Filter books by title."
+            },
+            {
+              "in": "query",
+              "name": "desc",
+              "schema": {
+                "type": "string"
+              },
+              "description": "Filter books by description."
+            },
+            {
+              "in": "query",
+              "name": "author",
+              "schema": {
+                "type": "string"
+              },
+              "description": "Filter books by author."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved book(s).",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BookResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Book not found.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create New Book",
+          "description": "Creates a new book record.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Successfully created a book.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BookResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "summary": "Update Book",
+          "description": "Updates an existing book's details by ID.",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "integer"
+              },
+              "required": true,
+              "description": "ID of the book to update."
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookUpdate"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successfully updated the book.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BookResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Book not found.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete Book or All Books",
+          "description": "Deletes a single book by ID or all books if the 'delete=all' query is provided.",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "id",
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID of the book to delete. Required if not using delete=all."
+            },
+            {
+              "in": "query",
+              "name": "delete",
+              "schema": {
+                "type": "string"
+              },
+              "description": "Set this to 'all' to delete all books."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully deleted book(s).",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Success"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Book not found.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal server error or failed delete operation.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Book": {
+          "type": "object",
+          "required": [
+            "title",
+            "author"
+          ],
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "author": {
+              "type": "string"
+            }
+          }
+        },
+        "BookUpdate": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "author": {
+              "type": "string"
+            }
+          }
+        },
+        "BookResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "boolean"
+            },
+            "message": {
+              "type": "string"
+            },
+            "data": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Book"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "Success": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "boolean"
+            },
+            "message": {
+              "type": "string"
+            },
+            "data": {
+              "type": "null"
+            }
+          }
+        },
+        "Error": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "boolean"
+            },
+            "message": {
+              "type": "string"
+            },
+            "data": {
+              "type": "null"
+            }
+          }
+        }
+      }
+    }
+  }
