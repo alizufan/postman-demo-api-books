@@ -19,11 +19,13 @@ const supabase = createClient(
 const prisma = new PrismaClient()
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+    const str = (v: string | string[]) => {
+        if (Array.isArray(v)) return v[0];
+        return v;
+    };
+
     try {
-        let idStr = req.query?.id || '0'
-        if (Array.isArray(idStr)) {
-            idStr = idStr[0]
-        }
+        let idStr = str(req.query?.id || '0')
         const id = parseInt(idStr)
     
         switch (req.method?.toUpperCase()) {
@@ -49,14 +51,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
                 let { take, page, author, title, desc } = req.query
 
-                const str = (v: string | string[]) => {
-                    if (Array.isArray(v)) return v[0];
-                    return v;
-                };
-
                 let meta = {
-                    take: parseInt(str(take)),
-                    page: parseInt(str(page)),
+                    take: parseInt(str(take || '0')),
+                    page: parseInt(str(page || '0')),
                     total: 0
                 }
 
@@ -65,13 +62,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     take: meta.take,
                     where: {
                         title: {
-                            contains: str(title),
+                            contains: str(title || ''),
                         },
                         desc: {
-                            contains: str(desc),
+                            contains: str(desc || ''),
                         },
                         author: {
-                            contains: str(author),
+                            contains: str(author || ''),
                         },
                     },
                     orderBy: {
