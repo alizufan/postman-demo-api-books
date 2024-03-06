@@ -71,7 +71,29 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/BookResponse"
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "oneOf": [
+                          {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/components/schemas/Book"
+                            }
+                          },
+                          {
+                            "$ref": "#/components/schemas/Book",
+                            "nullable": true
+                          }
+                        ]
+                      }
+                    }
                   }
                 }
               }
@@ -81,7 +103,19 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/Error"
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Book",
+                        "nullable": true
+                      }
+                    }
                   }
                 }
               }
@@ -107,7 +141,19 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/BookResponse"
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Book",
+                        "nullable": true
+                      }
+                    }
                   }
                 }
               }
@@ -144,7 +190,19 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/BookResponse"
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Book",
+                        "nullable": true
+                      }
+                    }
                   }
                 }
               }
@@ -154,7 +212,19 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/Error"
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Book",
+                        "nullable": true
+                      }
+                    }
                   }
                 }
               }
@@ -188,7 +258,19 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/Success"
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Book",
+                        "nullable": true
+                      }
+                    }
                   }
                 }
               }
@@ -198,7 +280,19 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/Error"
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Book",
+                        "nullable": true
+                      }
+                    }
                   }
                 }
               }
@@ -208,7 +302,19 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/Error"
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Book",
+                        "nullable": true
+                      }
+                    }
                   }
                 }
               }
@@ -221,6 +327,7 @@
       "schemas": {
         "Book": {
           "type": "object",
+          "nullable": true,
           "required": [
             "title",
             "author"
@@ -263,13 +370,14 @@
             "data": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/Book"
-                },
-                {
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Book"
                   }
+                },
+                {
+                  "$ref": "#/components/schemas/Book",
+                  "nullable": true
                 }
               ]
             }
@@ -285,7 +393,8 @@
               "type": "string"
             },
             "data": {
-              "type": "null"
+              "$ref": "#/components/schemas/Book",
+              "nullable": true
             }
           }
         },
@@ -299,7 +408,8 @@
               "type": "string"
             },
             "data": {
-              "type": "null"
+              "$ref": "#/components/schemas/Book",
+              "nullable": true
             }
           }
         }
