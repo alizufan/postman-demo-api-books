@@ -1,8 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Prisma, PrismaClient } from '@prisma/client'
-
 import { createClient } from '@supabase/supabase-js'
-import { count } from 'console'
+
+
+// Create a single prisma client for interacting with your database
+const prisma = new PrismaClient()
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(
@@ -16,8 +18,6 @@ const supabase = createClient(
         }
     }
 )
-
-const prisma = new PrismaClient()
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     const str = (v: string | string[]) => {
