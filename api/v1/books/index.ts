@@ -14,7 +14,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         switch (req.method?.toUpperCase()) {
             case "GET": {
                 if (id > 0) {
-                    const book = await prisma.book.findUnique({
+                    const book = await prisma.book.findFirst({
                         where: { id }
                     })
                     return res.status(200).json(book)
