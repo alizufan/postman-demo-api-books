@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Prisma, PrismaClient } from '@prisma/client'
 
 import { createClient } from '@supabase/supabase-js'
+import { count } from 'console'
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(
@@ -57,7 +58,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     total: 0
                 }
 
-                let args: Prisma.BookFindManyArgs | Prisma.BookCountArgs = {
+                meta.total = await prisma.book.count({where: {
+                        title: {
+                            contains: str(title || ''),
+                        },
+                        desc: {
+                            contains: str(desc || ''),
+                        },
+                        author: {
+                            contains: str(author || ''),
+                        },
+                    },
+                })
+
+                const books = await prisma.book.findMany({
                     skip: (meta.take * meta.page) - meta.take,
                     take: meta.take,
                     where: {
@@ -74,10 +88,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     orderBy: {
                         id: 'desc'
                     }
-                }
-
-                meta.total = await prisma.book.count(args as Prisma.BookCountArgs)
-                const books = await prisma.book.findMany(args as Prisma.BookFindManyArgs)
+                })
 
                 return res.status(200).json({
                     status: true,
