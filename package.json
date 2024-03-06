@@ -2,9 +2,15 @@
   "repository": "https://github.com/vercel/examples.git",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "postinstall": "prisma generate"
+  },
   "devDependencies": {
     "@types/node": "^17.0.42",
     "@vercel/node": "^2.9.6",
     "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.10.2"
   }
 }
