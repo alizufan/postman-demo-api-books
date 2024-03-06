@@ -96,7 +96,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
             case "DELETE": {
                 if (req.query.delete == "all") {
-                    let { error } = await supabase.rpc('TruncateBookTable')
+                    let { error } = await supabase.rpc('reset_book_table')
                     if (error) {
                         console.error("supabase-error: ", error)
                         return res.status(200).json({
