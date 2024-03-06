@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
-        let idStr = req.query.id
+        let idStr = req.query?.id || ''
         if (Array.isArray(idStr)) {
             idStr = idStr[0]
         }
