@@ -99,7 +99,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     let { error } = await supabase.rpc('reset_book_table')
                     if (error) {
                         console.error("supabase-error: ", error)
-                        return res.status(200).json({
+                        return res.status(500).json({
                             status: false,
                             message: "failed delete all book",
                             data: null
