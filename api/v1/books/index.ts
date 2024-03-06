@@ -1,6 +1,21 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Prisma, PrismaClient } from '@prisma/client'
 
+import { createClient } from '@supabase/supabase-js'
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+    process.env.SUPABASE_CLIENT_URL || '', 
+    process.env.SUPABASE_ANON_PUB_KEY || '',
+    {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+          detectSessionInUrl: false
+        }
+    }
+)
+
 const prisma = new PrismaClient()
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -81,9 +96,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
             case "DELETE": {
                 if (req.query.delete == "all") {
-                    await prisma.$queryRaw(
-                        Prisma.sql`SELECT TruncateBookTable();`
-                    )
+                    let { error } = await supabase.rpc('TruncateBookTable')
+                    if (error) {
+                        console.error("supabase-error: ", error)
+                        return res.status(200).json({
+                            status: false,
+                            message: "failed delete all book",
+                            data: null
+                        })
+                    }
+
                     return res.status(200).json({
                         status: true,
                         message: "success delete all book",
@@ -124,7 +146,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }
         }
     } catch(err) {
-        console.error("catch-a-runtime-error: ", err)
+        console.error("runtime-error: ", err)
         return res.status(500).json({
             status: false,
             message: "internal server error",
