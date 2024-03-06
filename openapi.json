@@ -341,6 +341,16 @@
             },
             "author": {
               "type": "string"
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2024-03-07T17:40:34.144Z",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2024-03-06T17:40:34.144Z",
+              "format": "date-time"
             }
           }
         },
