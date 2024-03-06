@@ -1,10 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Prisma, PrismaClient } from '@prisma/client'
 
+const prisma = new PrismaClient()
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
-        const prisma = new PrismaClient()
-    
         let { idStr } = req.query
         if (Array.isArray(idStr)) {
             idStr = idStr[0]
