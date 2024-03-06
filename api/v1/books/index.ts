@@ -53,8 +53,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 let { take, page, author, title, desc } = req.query
 
                 let meta = {
-                    take: parseInt(str(take || '0')),
-                    page: parseInt(str(page || '0')),
+                    take: parseInt(str(take || '10')),
+                    page: parseInt(str(page || '1')),
                     total: 0
                 }
 
