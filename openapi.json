@@ -112,8 +112,7 @@
                         "type": "string"
                       },
                       "data": {
-                        "$ref": "#/components/schemas/Book",
-                        "nullable": true
+                        "example": null
                       }
                     }
                   }
@@ -150,8 +149,7 @@
                         "type": "string"
                       },
                       "data": {
-                        "$ref": "#/components/schemas/Book",
-                        "nullable": true
+                        "$ref": "#/components/schemas/Book"
                       }
                     }
                   }
@@ -199,8 +197,7 @@
                         "type": "string"
                       },
                       "data": {
-                        "$ref": "#/components/schemas/Book",
-                        "nullable": true
+                        "$ref": "#/components/schemas/Book"
                       }
                     }
                   }
@@ -221,8 +218,7 @@
                         "type": "string"
                       },
                       "data": {
-                        "$ref": "#/components/schemas/Book",
-                        "nullable": true
+                        "example": null
                       }
                     }
                   }
@@ -267,8 +263,7 @@
                         "type": "string"
                       },
                       "data": {
-                        "$ref": "#/components/schemas/Book",
-                        "nullable": true
+                        "$ref": "#/components/schemas/Book"
                       }
                     }
                   }
@@ -289,8 +284,7 @@
                         "type": "string"
                       },
                       "data": {
-                        "$ref": "#/components/schemas/Book",
-                        "nullable": true
+                        "example": null
                       }
                     }
                   }
@@ -311,8 +305,7 @@
                         "type": "string"
                       },
                       "data": {
-                        "$ref": "#/components/schemas/Book",
-                        "nullable": true
+                        "example": null
                       }
                     }
                   }
@@ -378,7 +371,7 @@
             }
           }
         },
-        "BookResponse": {
+        "General": {
           "type": "object",
           "properties": {
             "status": {
@@ -413,8 +406,7 @@
               "type": "string"
             },
             "data": {
-              "$ref": "#/components/schemas/Book",
-              "nullable": true
+              "$ref": "#/components/schemas/Book"
             }
           }
         },
@@ -428,8 +420,7 @@
               "type": "string"
             },
             "data": {
-              "$ref": "#/components/schemas/Book",
-              "nullable": true
+              "example": null
             }
           }
         }
