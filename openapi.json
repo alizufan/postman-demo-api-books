@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
       "title": "Book's REST API",
-      "description": "This API facilitates the management and retrieval of book records, leveraging Prisma for direct database interactions and Supabase for specific operations. It is designed to support CRUD operations on book records, offering filtering, pagination, and bulk deletion capabilities.\n",
+      "description": "This API facilitates the management and retrieval of book records, leveraging Prisma ORM for direct database interactions and Supabase PosgreSQL DB for specific operations. It is designed to support CRUD operations on book records, offering filtering, pagination, and bulk deletion capabilities.\n",
       "version": "1.0.0"
     },
     "servers": [
