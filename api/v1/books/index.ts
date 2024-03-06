@@ -47,13 +47,44 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     })
                 }
 
-                const books = await prisma.book.findMany({
+                let { take, page, author, title, desc } = req.query
+
+                const str = (v: string | string[]) => {
+                    if (Array.isArray(v)) return v[0];
+                    return v;
+                };
+
+                let meta = {
+                    take: parseInt(str(take)),
+                    page: parseInt(str(page)),
+                    total: 0
+                }
+
+                let args: Prisma.BookFindManyArgs | Prisma.BookCountArgs = {
+                    skip: (meta.take * meta.page) - meta.take,
+                    take: meta.take,
+                    where: {
+                        title: {
+                            contains: str(title),
+                        },
+                        desc: {
+                            contains: str(desc),
+                        },
+                        author: {
+                            contains: str(author),
+                        },
+                    },
                     orderBy: {
                         id: 'desc'
                     }
-                })
+                }
+
+                meta.total = await prisma.book.count(args as Prisma.BookCountArgs)
+                const books = await prisma.book.findMany(args as Prisma.BookFindManyArgs)
+
                 return res.status(200).json({
                     status: true,
+                    meta: meta,
                     message: "success get list of book",
                     data: books
                 })
