@@ -3,7 +3,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "postinstall": "npx prisma migrate --schema=./prisma/schema.prisma && npx prisma generate"
+    "postinstall": "npx prisma migrate deploy --schema=./prisma/schema.prisma && npx prisma generate"
   },
   "devDependencies": {
     "@types/node": "^17.0.42",
