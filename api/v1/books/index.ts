@@ -1,10 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Prisma, PrismaClient } from '@prisma/client'
 import { createClient } from '@supabase/supabase-js'
-import Joi from 'joi';
+import JoiImport from 'joi';
 import JoiDate from '@joi/date';
 
-Joi.extend(JoiDate)
+const Joi = JoiImport.extend(JoiDate) as typeof JoiImport
 
 // Create a single prisma client for interacting with your database
 const prisma = new PrismaClient()
