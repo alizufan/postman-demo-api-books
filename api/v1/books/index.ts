@@ -198,10 +198,10 @@ const createBook = async (req: VercelRequest, res: VercelResponse) => {
 
         desc: Joi
             .string()
-            .optional()
             .max(255)
             .alphanum()
-            .allow(' '),
+            .allow(' ')
+        .optional(),
 
         author:  Joi
             .string()
@@ -213,13 +213,13 @@ const createBook = async (req: VercelRequest, res: VercelResponse) => {
 
         createdAt: Joi
             .date()
-            .optional()
-            .format("YYYY-MM-DDTHH:mm:ssZ"),
+            .format("YYYY-MM-DDTHH:mm:ssZ")
+        .optional(),
 
         updatedAt: Joi
             .date()
-            .optional()
-            .format("YYYY-MM-DDTHH:mm:ssZ"),
+            .format("YYYY-MM-DDTHH:mm:ssZ")
+        .optional(),
     })
     
     const { error } = schema.validate(req.body, {
@@ -268,10 +268,10 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
 
         desc: Joi
             .string()
-            .optional()
             .max(255)
             .alphanum()
-            .allow(' '),
+            .allow(' ')
+        .optional(),
 
         author:  Joi
             .string()
@@ -283,13 +283,13 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
 
         createdAt: Joi
             .date()
-            .optional()
-            .format("YYYY-MM-DDTHH:mm:ssZ"),
+            .format("YYYY-MM-DDTHH:mm:ssZ")
+        .optional(),
 
         updatedAt: Joi
             .date()
-            .optional()
-            .format("YYYY-MM-DDTHH:mm:ssZ"),
+            .format("YYYY-MM-DDTHH:mm:ssZ")
+        .optional(),
     })
     
     const { error } = schema.validate(req.body, {
