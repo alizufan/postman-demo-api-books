@@ -228,9 +228,15 @@ const createBook = async (req: VercelRequest, res: VercelResponse) => {
     if(error) {
         return res.status(422).json({
             status: false,
-            message: 'unprocessable entity',
+            message: 'validation error',
             data: null,
-            error: error
+            errors: error.details.map((v) => {
+                const key = v.context?.key || ''
+                return {
+                    key: key,
+                    message: v.message.replace('\"'+key+'\"', '')
+                }
+            })
         })
     }
 
@@ -298,9 +304,15 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
     if(error) {
         return res.status(422).json({
             status: false,
-            message: 'unprocessable entity',
+            message: 'validation error',
             data: null,
-            error: error
+            errors: error.details.map((v) => {
+                const key = v.context?.key || ''
+                return {
+                    key: key,
+                    message: v.message.replace('\"'+key+'\"', '')
+                }
+            })
         })
     }
 
