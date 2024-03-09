@@ -153,7 +153,7 @@ const getListBook = async (req: VercelRequest, res: VercelResponse) => {
 
 const getDetailBook = async (req: VercelRequest, res: VercelResponse) => {
     const { id = '0' } = req.query
-    const idNum = parseInt(ArrayToString(id))
+    const idNum = parseInt(ArrayToString(id)) || 0
 
     if (idNum <= 0) {
         return res.status(404).json({
@@ -197,7 +197,7 @@ const createBook = async (req: VercelRequest, res: VercelResponse) => {
 
 const updateBook = async (req: VercelRequest, res: VercelResponse) => {
     const { id = '0' } = req.query
-    const idNum = parseInt(ArrayToString(id))
+    const idNum = parseInt(ArrayToString(id)) || 0
 
     if (idNum <= 0) {
         return res.status(404).json({
@@ -239,7 +239,7 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
 
 const deleteBook = async (req: VercelRequest, res: VercelResponse) => {
     const { id = '0' } = req.query
-    const idNum = parseInt(ArrayToString(id))
+    const idNum = parseInt(ArrayToString(id)) || 0
 
     const b = await prisma.book.findFirst({
         select: {
