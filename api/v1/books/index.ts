@@ -32,7 +32,15 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
         switch (req.method?.toUpperCase()) {
             case "GET": {
                 // get detail - expect object
-                if (id > 0) {
+                if (id >= 0) {
+                    if (id = 0) {
+                        return res.status(404).json({
+                            status: false,
+                            message: "book not found",
+                            data: null
+                        })
+                    }
+                    
                     const book = await prisma.book.findFirst({
                         where: { id }
                     })
