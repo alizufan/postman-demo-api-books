@@ -19,19 +19,27 @@ const supabase = createClient(
     }
 )
 
-const handler = async (req: VercelRequest, res: VercelResponse) => {
-    const str = (v: string | string[]) => {
-        if (Array.isArray(v)) return v[0];
-        return v;
-    };
+type Meta = {
+    take: number
+    page: number
+    total: number
+    totalPage: number
+    filter: { [key: string]: string } | null
+}
 
+const ArrayToString = (v: string | string[]) => {
+    if (Array.isArray(v)) return v[0];
+    return v;
+};
+
+const handler = async (req: VercelRequest, res: VercelResponse) => {
     try {
-        let idStr = str(req.query?.id || '0')
+        let idStr = ArrayToString(req.query?.id || '0')
         const id = parseInt(idStr)
     
         switch (req.method?.toUpperCase()) {
             case "GET": {
-                if (id >= 0) {
+                if (req.query.hasOwnProperty("id")) {
                     return await getDetailBook(id, res)
                 }
                 return await getListBook(req, res)
@@ -46,9 +54,17 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
             }
 
             case "DELETE": {
-                if (req.query.delete == "all") {
+                if (req.query.hasOwnProperty("delete")) {
+                    if (req.query.delete == "all") {
+                        return res.status(400).json({
+                            status: false,
+                            message: "un-supported action",
+                            data: null
+                        })
+                    }
                     return await deleteAllBook(res)
                 }
+
                 return await deleteBook(id, res)
             }
 
@@ -73,23 +89,35 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
 const getListBook = async (req: VercelRequest, res: VercelResponse) => {
     let { take = '10', page = '1', author = '', title = '', desc = '' } = req.query
 
-    let meta = {
-        take: parseInt(str(take)),
-        page: parseInt(str(page)),
+    let meta: Meta = {
+        take: parseInt(ArrayToString(take)),
+        page: parseInt(ArrayToString(page)),
         total: 0,
-        totalPage: 0
+        totalPage: 0,
+        filter: null
+    }
+
+    Array('author', 'title', 'desc').forEach((v) => {
+        if (req.query.hasOwnProperty(v)) {
+            // @ts-ignore
+            meta.filter[v] = ArrayToString(req.query[v])
+        }
+    })
+
+    if (meta.take >= 20) {
+        meta.take = 20
     }
 
     meta.total = await prisma.book.count({
         where: {
             title: {
-                contains: str(title),
+                contains: ArrayToString(title),
             },
             desc: {
-                contains: str(desc),
+                contains: ArrayToString(desc),
             },
             author: {
-                contains: str(author),
+                contains: ArrayToString(author),
             },
         },
     })
@@ -99,13 +127,13 @@ const getListBook = async (req: VercelRequest, res: VercelResponse) => {
         take: meta.take,
         where: {
             title: {
-                contains: str(title),
+                contains: ArrayToString(title),
             },
             desc: {
-                contains: str(desc),
+                contains: ArrayToString(desc),
             },
             author: {
-                contains: str(author),
+                contains: ArrayToString(author),
             },
         },
         orderBy: {
