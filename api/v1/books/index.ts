@@ -192,23 +192,17 @@ const createBook = async (req: VercelRequest, res: VercelResponse) => {
             .string()
             .min(1)
             .max(50)
-            .alphanum()
-            .allow(' ')
         .required(),
 
         desc: Joi
             .string()
             .max(255)
-            .alphanum()
-            .allow(' ')
         .optional(),
 
         author:  Joi
             .string()
             .min(1)
             .max(50)
-            .alphanum()
-            .allow(' ')
         .required(),
 
         createdAt: Joi
@@ -234,7 +228,7 @@ const createBook = async (req: VercelRequest, res: VercelResponse) => {
                 const key = v.context?.key || ''
                 return {
                     key: key,
-                    message: v.message.replace('\"'+key+'\"', '')
+                    message: v.message.replace('\"'+key+'\"', '').trim()
                 }
             })
         })
@@ -268,23 +262,17 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
             .string()
             .min(1)
             .max(50)
-            .alphanum()
-            .allow(' ')
         .required(),
 
         desc: Joi
             .string()
             .max(255)
-            .alphanum()
-            .allow(' ')
         .optional(),
 
         author:  Joi
             .string()
             .min(1)
             .max(50)
-            .alphanum()
-            .allow(' ')
         .required(),
 
         createdAt: Joi
@@ -310,7 +298,7 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
                 const key = v.context?.key || ''
                 return {
                     key: key,
-                    message: v.message.replace('\"'+key+'\"', '')
+                    message: v.message.replace('\"'+key+'\"', '').trim()
                 }
             })
         })
