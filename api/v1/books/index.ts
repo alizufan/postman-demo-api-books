@@ -226,7 +226,7 @@ const createBook = async (req: VercelRequest, res: VercelResponse) => {
         abortEarly: false,
     })
     if(error) {
-        res.status(422).json({
+        return res.status(422).json({
             status: false,
             message: 'unprocessable entity',
             data: null,
@@ -296,7 +296,7 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
         abortEarly: false,
     })
     if(error) {
-        res.status(422).json({
+        return res.status(422).json({
             status: false,
             message: 'unprocessable entity',
             data: null,
