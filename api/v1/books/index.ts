@@ -22,7 +22,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     try {
         switch (req.method?.toUpperCase()) {
             case 'GET': {
-                if (req.query['id']) {
+                if (req.query['id'] || req.query['id'] === '') {
                     return await getDetailBook(req, res)
                 }
                 return await getListBook(req, res)
@@ -37,7 +37,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
             }
 
             case 'DELETE': {
-                if (req.query['delete']) {
+                if (req.query['delete'] || req.query['delete'] === '') {
                     if (req.query.delete !== 'all') {
                         return res.status(400).json({
                             status: false,
