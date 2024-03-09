@@ -228,9 +228,12 @@ const createBook = async (req: VercelRequest, res: VercelResponse) => {
                 const key = v.context?.key || ''
                 return {
                     key: key,
-                    message: v.message.replace('\"'+key+'\"', '').trim()
+                    msg: v.message.replace('\"'+key+'\"', '').trim()
                 }
-            })
+            }).reduce((prev, curr) => {
+                prev[curr.key] = curr.msg;
+                return prev;
+            }, {})
         })
     }
 
@@ -298,9 +301,12 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
                 const key = v.context?.key || ''
                 return {
                     key: key,
-                    message: v.message.replace('\"'+key+'\"', '').trim()
+                    msg: v.message.replace('\"'+key+'\"', '').trim()
                 }
-            })
+            }).reduce((prev, curr) => {
+                prev[curr.key] = curr.msg;
+                return prev;
+            }, {})
         })
     }
 
