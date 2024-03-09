@@ -1,7 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Prisma, PrismaClient } from '@prisma/client'
 import { createClient } from '@supabase/supabase-js'
+import Joi from 'joi';
+import JoiDate from '@joi/date';
 
+Joi.extend(JoiDate)
 
 // Create a single prisma client for interacting with your database
 const prisma = new PrismaClient()
@@ -184,6 +187,53 @@ const getDetailBook = async (req: VercelRequest, res: VercelResponse) => {
 }
 
 const createBook = async (req: VercelRequest, res: VercelResponse) => {
+    const schema = Joi.object({
+        title: Joi
+            .string()
+            .min(1)
+            .max(50)
+            .alphanum()
+            .allow(' ')
+        .required(),
+
+        desc: Joi
+            .string()
+            .optional()
+            .max(255)
+            .alphanum()
+            .allow(' '),
+
+        author:  Joi
+            .string()
+            .min(1)
+            .max(50)
+            .alphanum()
+            .allow(' ')
+        .required(),
+
+        createdAt: Joi
+            .date()
+            .optional()
+            .format("YYYY-MM-DDTHH:mm:ssZ"),
+
+        updatedAt: Joi
+            .date()
+            .optional()
+            .format("YYYY-MM-DDTHH:mm:ssZ"),
+    })
+    
+    const { error } = schema.validate(req.body, {
+        abortEarly: false,
+    })
+    if(error) {
+        res.status(422).json({
+            status: false,
+            message: 'unprocessable entity',
+            data: null,
+            error: error
+        })
+    }
+
     const data = req.body as Prisma.BookCreateInput
     const book = await prisma.book.create({
         data
@@ -204,6 +254,53 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
             status: false,
             message: 'book not found',
             data: null
+        })
+    }
+
+    const schema = Joi.object({
+        title: Joi
+            .string()
+            .min(1)
+            .max(50)
+            .alphanum()
+            .allow(' ')
+        .required(),
+
+        desc: Joi
+            .string()
+            .optional()
+            .max(255)
+            .alphanum()
+            .allow(' '),
+
+        author:  Joi
+            .string()
+            .min(1)
+            .max(50)
+            .alphanum()
+            .allow(' ')
+        .required(),
+
+        createdAt: Joi
+            .date()
+            .optional()
+            .format("YYYY-MM-DDTHH:mm:ssZ"),
+
+        updatedAt: Joi
+            .date()
+            .optional()
+            .format("YYYY-MM-DDTHH:mm:ssZ"),
+    })
+    
+    const { error } = schema.validate(req.body, {
+        abortEarly: false,
+    })
+    if(error) {
+        res.status(422).json({
+            status: false,
+            message: 'unprocessable entity',
+            data: null,
+            error: error
         })
     }
 
