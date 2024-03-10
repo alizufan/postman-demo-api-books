@@ -84,7 +84,7 @@ const ArrayToString = (v: string | string[]) => {
 };
 
 const getListBook = async (req: VercelRequest, res: VercelResponse) => {
-    let { take = '10', page = '1', author = '', title = '', desc = '' } = req.query
+    const { take = '10', page = '1', author = '', title = '', desc = '' } = req.query
 
     let meta: Meta = {
         take: parseInt(ArrayToString(take)),
@@ -95,7 +95,7 @@ const getListBook = async (req: VercelRequest, res: VercelResponse) => {
     }
 
     Array('author', 'title', 'desc').forEach((v) => {
-        if (req.query[v]) {
+        if (req.query[v] || req.query[v] === '') {
             if (meta.filter == null) {
                 meta.filter = {}
             }
@@ -184,7 +184,7 @@ const getDetailBook = async (req: VercelRequest, res: VercelResponse) => {
 }
 
 const createBook = async (req: VercelRequest, res: VercelResponse) => {
-    let data = req.body as Prisma.BookCreateInput
+    const data = req.body as Prisma.BookCreateInput
     const book = await prisma.book.create({
         data
     })
@@ -223,7 +223,7 @@ const updateBook = async (req: VercelRequest, res: VercelResponse) => {
         })
     }
 
-    let data = req.body as Prisma.BookUpdateInput
+    const data = req.body as Prisma.BookUpdateInput
     const book = await prisma.book.update({
         data,
         where: { 
@@ -270,7 +270,7 @@ const deleteBook = async (req: VercelRequest, res: VercelResponse) => {
 }
 
 const deleteAllBook = async (res: VercelResponse) => {
-    let { error } = await supabase.rpc('reset_book_table')
+    const { error } = await supabase.rpc('reset_book_table')
     if (error) {
         console.error('supabase-error: ', error)
         return res.status(500).json({
